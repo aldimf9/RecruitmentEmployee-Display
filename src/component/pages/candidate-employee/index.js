@@ -43,11 +43,11 @@ let TableListCandidateEmployee = () => {
                 </thead>
                 <tbody>
                     <tr>
-                        <th>data.Name</th>
-                        <th>data.Place and Date of Birth</th>
-                        <th>data.Phone Number</th>
-                        <th>data.CV</th>
-                        <th>data.Portofolio</th>
+                        <td>data.Name</td>
+                        <td>data.Place and Date of Birth</td>
+                        <td>data.Phone Number</td>
+                        <td>data.CV</td>
+                        <td>data.Portofolio</td>
                     </tr>
                 </tbody>
             </table >

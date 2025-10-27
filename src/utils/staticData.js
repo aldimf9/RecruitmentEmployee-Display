@@ -4,23 +4,31 @@ const dataArrayOfObject = {
     "data" : [
         {
             id : "LTP-LENOVO-01",
-            name : "LOQ",
-            isDeleted : false
+            status : "APPROVED",
+            note : "Congrats" , 
+            createAt : "10/24/2025	",
+            approvalAt : "10/24/2025	"
         },
         {
             id : "LTP-LENOVO-02",
-            name : "Thinkpad",
-            isDeleted : false
+            status : "APPROVED",
+            note : "Congrats" , 
+            createAt : "10/24/2025	",
+            approvalAt : "10/24/2025	"
         },
         {
             id : "LTP-LENOVO-03",
-            name : "Ideapad",
-            isDeleted : true
+           status : "REJECTED",
+            note : "Try Again" , 
+            createAt : "10/24/2025	",
+            approvalAt : "10/24/2025	"
         },
         {
             id : "LTP-LENOVO-04",
-            name : "Slimpad",
-            isDeleted : false
+            status : "REJECTED",
+            note : "Try Again" , 
+            createAt : "10/24/2025	",
+            approvalAt : "10/24/2025	"
         }
     ]
 }

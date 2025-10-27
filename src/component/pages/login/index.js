@@ -2,7 +2,7 @@ let Login = () => {
     return (
         <div>
             <h1>Login</h1>
-            <form>
+            <div>
                 <div>
                     <label>Username</label>
                     <input placeholder="Enter Your Username"></input>
@@ -12,7 +12,7 @@ let Login = () => {
                     <input placeholder="Enter Your Password"></input>
                 </div>
                 <button>Submit</button>
-            </form>
+            </div>
         </div>
     )
 }
