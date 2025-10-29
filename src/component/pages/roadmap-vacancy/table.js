@@ -27,16 +27,15 @@ let TableListRoadmapVacancy = () => {
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Description</th>
                         <th>Status Vacancy</th>
+                        <th>Submit</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Apply</td>
-                        <td>Waiting for Approval</td>
-                        <td>10/24/2025</td>
                         <td>Junior QA</td>
+                        <td>Apply</td>
+                        <td>10/24/2025</td>
                     </tr>
                 </tbody>
             </table >

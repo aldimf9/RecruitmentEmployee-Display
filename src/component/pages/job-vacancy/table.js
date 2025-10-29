@@ -1,26 +1,29 @@
 import { useEffect, useState } from "react"
+import { getAllJobForUser } from "../../../services/jobService";
+import { useQuery } from "@tanstack/react-query";
 
 let TableListJobVacancy = () => {
     let [job,setJob] = useState([{}])
-     useEffect(() => {
-        fetch("http://localhost:9000/api/job-vacancy",
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU2FsZXMiLCJzdWIiOiJhcmlxIiwiaWF0IjoxNzYxNTY1NDkwLCJleHAiOjE3NjE3ODE0OTB9.b_ngvu43ZZRYIs-WAjEInXlB-zcqTay3T_uKheis4m4",
-                    "token": "RECRUBATM"
-                }
-            }
-        ).
-            then((response) => response.json()).
-            then((data) => setJob(data.data)).
-            catch((error) => console.log(error))
-    }, [])
+    const { data, isSuccess, isLoading, isError, error, isFetching } =
+        useQuery({
+            queryKey: ["job"],
+            queryFn: getAllJobForUser,
+            enabled: true,
+            staleTime: 300000,
+            cacheTime: 300000,
+            refetchInterval: 30000000
+        });
+    useEffect(() => {
+        if (data?.data != null && isSuccess) {
+            setJob(data?.data);
+        }
+    }, [data, isSuccess])
+    if (isLoading) return <p>Loading</p>
+    if (isFetching) return <p>Fetching</p>
     return (
         <div>
             <h1>Job Vacancy</h1>
-            <table border={1}>
+            <table>
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -33,7 +36,8 @@ let TableListJobVacancy = () => {
                                 <tr key={x.id}>
                                     <td>{x.name}</td>
                                     <td>{x.description}</td>
-                                </tr>
+                                    <button>Detail</button>
+                                </tr>             
                             )
                         })
                     }

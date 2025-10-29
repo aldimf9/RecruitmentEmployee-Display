@@ -1,22 +1,25 @@
 import { useEffect, useState } from "react";
+import { getAllRole } from "../../../services/roleService";
+import { useQuery } from "@tanstack/react-query";
 
 let TableRole = () => {
     const [role, setRole] = useState([{}]);
+    const { data, isSuccess, isLoading, isError, error, isFetching } =
+        useQuery({
+            queryKey: ["roles"],
+            queryFn: getAllRole,
+            enabled: true,
+            staleTime: 300000,
+            cacheTime: 300000,
+            refetchInterval: 30000000
+        });
     useEffect(() => {
-        fetch("http://localhost:9000/api/role",
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU2FsZXMiLCJzdWIiOiJhcmlxIiwiaWF0IjoxNzYxNTQ5NzU3LCJleHAiOjE3NjE3NjU3NTd9.aZlGuZ527xnDYABK9uZP-JY2dKO8ieyHDRFJfGpvwvA",
-                    "token": "RECRUBATM"
-                }
-            }
-        ).
-            then((response) => response.json()).
-            then((data) => setRole(data.data)).
-            catch((error) => console.log(error))
-    }, [])
+        if (data?.data != null && isSuccess) {
+            setRole(data?.data);
+        }
+    }, [data, isSuccess])
+    if (isLoading) return <p>Loading</p>
+    if (isFetching) return <p>Fetching</p>
     return (
         <div>
             <h1>Role</h1>
@@ -28,12 +31,12 @@ let TableRole = () => {
                 </thead>
                 <tbody>
                     {role?.map(x => {
-                            return (
-                                <tr key={x.id}>
-                                    <td>{x.name}</td>
-                                </tr>
-                            )
-                        })
+                        return (
+                            <tr key={x.id}>
+                                <td>{x.name}</td>
+                            </tr>
+                        )
+                    })
                     }
                 </tbody>
             </table >

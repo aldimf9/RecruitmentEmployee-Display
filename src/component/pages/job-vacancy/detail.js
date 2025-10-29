@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react"
+import { getAllJobForUserById } from "../../../services/jobService";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { doApply } from "../../../services/roadmapService";
 
 let DetailJob = () => {
+    // State
     const [job, setJob] = useState({})
-    let [apply ,setApply] = useState({
+    const [id, setId] = useState(1)
+
+    // Body Apply
+    let [apply, setApply] = useState({
         id: 0,
         action: "Apply",
         feedback: "Your Apply is Process",
@@ -10,42 +17,45 @@ let DetailJob = () => {
         candidateEmployee: 19,
         jobVacancy: 1
     })
+
+    // Get Detail Job Data
+    const { data, isSuccess, isLoading, isError, error, isFetching } =
+        useQuery({
+            queryKey: ["jobById",id],
+            queryFn: () => getAllJobForUserById(id),
+            enabled: true,
+            staleTime: 300000,
+            cacheTime: 300000,
+            refetchInterval: 30000000
+        });
     useEffect(() => {
-        fetch("http://localhost:9000/api/job-vacancy/job-detail?id=1",
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU2FsZXMiLCJzdWIiOiJhcmlxIiwiaWF0IjoxNzYxNTY1NDkwLCJleHAiOjE3NjE3ODE0OTB9.b_ngvu43ZZRYIs-WAjEInXlB-zcqTay3T_uKheis4m4",
-                    "token": "RECRUBATM"
-                }
-            }
-        ).
-            then((response) => response.json()).
-            then((data) => setJob(data.data)).
-            catch((error) => console.log(error))
-    }, [])
-    let addApply = () => {
-        fetch("http://localhost:9000/api/apply",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU2FsZXMiLCJzdWIiOiJhcmlxIiwiaWF0IjoxNzYxNTY1NDkwLCJleHAiOjE3NjE3ODE0OTB9.b_ngvu43ZZRYIs-WAjEInXlB-zcqTay3T_uKheis4m4",
-                    "token": "RECRUBATM"
-                },
-                body: JSON.stringify(apply)
-            }
-        ).
-        then((response) => response.json()).
-        then((data) => console.log(data)).
-        catch((error) => console.log(error))
-    }
+        if (data?.data != null && isSuccess) {
+            setJob(data?.data);
+        }
+    }, [data, isSuccess])
+
+    // --- Mutation 1: Apply
+    const {
+        mutate: applyCandidate,
+        data: dataApply,
+        isLoading: isLoadingApply,
+        isSuccess: isSuccessApply,
+        isError: isErrorApply,
+        error: errorApply,
+    } = useMutation({
+        mutationFn: doApply,
+    });
+
+    const handleApply = () => {
+        applyCandidate({ apply });
+    };
+
+
     return (
         <div>
             <h1>{job.name}</h1>
             <h4>{job.description}</h4>
-            <button onClick={() => addApply()}>Apply</button>
+            <button onClick={() => handleApply()} disabled={isLoadingApply}>Apply</button>
         </div>
 
     )
