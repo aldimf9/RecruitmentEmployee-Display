@@ -20,22 +20,18 @@ let TableListRoadmapVacancy = () => {
 
     return (
         <div>
-            <h1>Roadmap Vacancy</h1>
-            {/* <h3>Job Name : data.Job Name</h3> */}
-            <h3>Candidate Name : data.Candidate Name</h3>
+            <h1>Job Application</h1>
             <table border={1}>
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Status Vacancy</th>
-                        <th>Submit</th>
+                        <th>Roadmap</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>Junior QA</td>
-                        <td>Apply</td>
-                        <td>10/24/2025</td>
+                        <td>Apply - Screening CV</td>
                     </tr>
                 </tbody>
             </table >

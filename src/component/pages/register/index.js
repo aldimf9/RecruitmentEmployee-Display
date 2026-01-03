@@ -1,85 +1,94 @@
+import { useMutation } from "@tanstack/react-query"
 import { useState } from "react"
+import { signUp } from "../../../services/registerService"
 
 let Register = () => {
+
+    // Body Sign Up data
     let [register, setRegister] = useState({
-        firstName: null,
-        lastName: null,
-        address: null,
-        phoneNumber: null,
-        birthDate: null,
-        cityDate: null,
-        curiculumVitae: null,
-        portofolio: null,
-        username: null,
-        password: null,
+        firstName: "",
+        lastName: "",
+        address: "",
+        phoneNumber: "",
+        birthDate: "",
+        cityDate: "",
+        curiculumVitae: "",
+        portofolio: "",
+        username: "",
+        password: "",
         role: 11
     })
-    let signUp = () => {
-        fetch("http://localhost:9000/api/auth/signup",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(register)
-            }
-        ).
-            then((response) => response.json()).
-            then((data) => console.log(data)).
-            catch((error) => console.log(error))
-    }
-    let handleInput = (e) => {
+
+    // Post Sign Up
+    const {
+        mutate: signUpApp,
+        data,
+        isLoading,
+        isSuccess,
+        isError,
+        error,
+
+    } = useMutation({
+        mutationFn: signUp
+    })
+
+    let handleOnChange = (e) => {
         setRegister({
             ...register,
             [e.target.name]: e.target.value
         })
     }
+    let handleSignUp = (e) => {
+        signUpApp(register);
+    }
     return (
         <div>
-            <h1>Register</h1>
-            <div>
-                <div>
-                    <label>First Name</label>
-                    <input name="firstName" onChange={(e) => handleInput(e)} placeholder="Enter your First Name"></input>
-                </div>
-                <div>
-                    <label>Last Name</label>
-                    <input name="lastName" onChange={(e) => handleInput(e)} placeholder="Enter your Last Name"></input>
-                </div>
-                <div>
-                    <label>Address</label>
-                    <input name="address" onChange={(e) => handleInput(e)} placeholder="Enter your Domisile Address"></input>
-                </div>
-                <div>
-                    <label>Phone Number</label>
-                    <input name="phoneNumber" onChange={(e) => handleInput(e)} placeholder="Enter your Phone Number(Example : 080000000000)"></input>
-                </div>
-                <div>
-                    <label >Birth Date</label>
-                    <input name="birthDate" onChange={(e) => handleInput(e)} type="date"></input>
-                </div>
-                <div>
-                    <label>City Date</label>
-                    <input name="cityDate" onChange={(e) => handleInput(e)} placeholder="Enter your where city birth"></input>
-                </div>
-                <div>
-                    <label>CV</label>
-                    <input name="curiculumVitae" onChange={(e) => handleInput(e)} placeholder="Enter your Link Curriculum Vitae"></input>
-                </div>
-                <div>
-                    <label>Portofolio</label>
-                    <input name="portofolio" onChange={(e) => handleInput(e)} placeholder="Enter your Link Portofolio"></input>
-                </div>
-                <div>
-                    <label>Username</label>
-                    <input name="username" onChange={(e) => handleInput(e)} placeholder="Enter your New Username"></input>
-                </div>
-                <div>
-                    <label>Password</label>
-                    <input name="password" onChange={(e) => handleInput(e)} type="password" placeholder="Enter your New Password"></input>
-                </div>
-                <button onClick={() => signUp()}>Submit</button>
+            <div className="preloader">
+                <svg className="circular" viewBox="25 25 50 50">
+                    <circle className="path" cx="50" cy="50" r="20" fill="none" strokeWidth="2" strokeMiterlimit="10" /> </svg>
             </div>
+            <section id="wrapper">
+                <div className="login-register" style={{ backgroundImage: "url('../assets/images/gallery/recru.jpg')" }}>
+                    <div className="login-box card">
+                        <div className="card-body">
+                            <form className="form-horizontal form-material" id="loginform" action="index.html">
+                                <h3 className="box-title m-b-20">Sign Up</h3>
+                                <div className="form-group">
+                                    <div className="col-xs-12">
+                                        <input name="firstName" onChange={(e) => handleOnChange(e)} className="form-control" type="text" required="" placeholder="First Name" />
+                                    </div>
+                                </div>
+                                <div className="form-group ">
+                                    <div className="col-xs-12">
+                                        <input name="lastName" onChange={(e) => handleOnChange(e)} className="form-control" type="text" required="" placeholder="Last Name" />
+                                    </div>
+                                </div>
+                                <div className="form-group ">
+                                    <div className="col-xs-12">
+                                        <input name="username" onChange={(e) => handleOnChange(e)} className="form-control" type="text" required="" placeholder="Username" />
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <div className="col-xs-12">
+                                        <input name="password" onChange={(e) => handleOnChange(e)} className="form-control" type="password" required="" placeholder="Password" />
+                                    </div>
+                                </div>
+                                <div className="form-group text-center m-t-20">
+                                    <div className="col-xs-12">
+                                        <button onClick={() => handleSignUp()} disabled={isLoading} className="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Sign Up</button>
+                                    </div>
+                                </div>
+                                <div className="form-group m-b-0">
+                                    <div className="col-sm-12 text-center">
+                                        <p>Already have an account? <a href="/signin" className="text-info m-l-5"><b>Sign In</b></a></p>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     )
 }

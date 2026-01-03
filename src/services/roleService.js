@@ -1,13 +1,25 @@
 import axios from "axios"
-import { API_URL } from "../utils/env_url"
+import { API_URL, jwt } from "../utils/env_url"
 
 export let getAllRole = async () => {
     let response = await axios.get(`${API_URL}/api/role`, {
         headers: {
             Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU2FsZXMiLCJzdWIiOiJhcmlxIiwiaWF0IjoxNzYxNzA3NDU3LCJleHAiOjE3NjE5MjM0NTd9.sWeuCl7K-FxtkT0pwjC0I461Glm4Qxr3P3DsH1j5XA4",
+                `Bearer ${jwt}`,
             token: "RECRUBATM"
         },
     });
-    return response.data 
+    return response.data
+}
+
+export let getRoleById = async (id) => {
+    let response = await axios.get(`${API_URL}/api/role/detail/`, {
+        params: { id },
+        headers: {
+            Authorization:
+                `Bearer ${jwt}`,
+            token: "RECRUBATM"
+        },
+    });
+    return response.data
 }

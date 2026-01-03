@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react"
-import { doApproved, doRejected, getDataOffering } from "../../../services/approvalService";
+import { doApproval, doApproved, doRejected, getDataOffering } from "../../../services/approvalService";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 
 // let TableListApproval = (props) => {
 let OfferingApproval = () => {
     // --- State
     const [offering, setOffering] = useState([]);
-    const [id, setId] = useState(19);
+
+    // Get param
+    const param = useParams()
+    const id = param.id;
 
     // --- Body post data
     const [approved] = useState({
@@ -73,74 +77,72 @@ let OfferingApproval = () => {
         }
     }, [dataOffering, isSuccessOffering]);
 
-    // --- Mutation 1: Approve
+    // --- Mutation Approval
     const {
-        mutate: approvCandidate,
+        mutate: approvalCandidate,
         data: dataApproved,
         isLoading: isLoadingApproved,
         isSuccess: isSuccessApproved,
         isError: isErrorApproved,
         error: errorApproved,
     } = useMutation({
-        mutationFn: doApproved,
+        mutationFn: doApproval,
     });
 
     const handleApproved = () => {
-        approvCandidate({ id, approved });
+        approvalCandidate({ id, approved });
     };
 
-    // --- Mutation 2: Reject
-    const {
-        mutate: rejectCandidate,
-        data: dataRejected,
-        isLoading: isLoadingRejected,
-        isSuccess: isSuccessRejected,
-        isError: isErrorRejected,
-        error: errorRejected,
-    } = useMutation({
-        mutationFn: doRejected,
-    });
-
     const handleRejected = () => {
-        rejectCandidate({ id, rejected });
+        approvalCandidate({ id, rejected });
     };
 
     return (
         <div>
-            <h1>Approval</h1>
+            <div className="container my-4">
+                <h1 className="text-center">Offering</h1>
+            </div>
             {/* approval change to number */}
             {/* <button onClick={() => setApproval(approval+1)}>+</button>
             {approval}
             <button onClick={() => setApproval(approval-1)}>-</button> */}
             {/* <h3>Job Name : data.Job Name</h3> */}
-            <h3>HR Name : data.HR Name</h3>
-            <h2>Offering</h2>
-            <table border={1}>
+            <table className="table table-striped color-bordered-table info-bordered-table">
                 <thead>
                     <tr>
+                        <th>Job</th>
                         <th>Status</th>
                         <th>Note</th>
                         <th>Approval</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {offering?.map(x => {
+                    {/* {offering?.map(x => {
                         return (
                             <tr key={x.id}>
                                 <td>{x.status}</td>
                                 <td>{x.note}</td>
                                 <td>
-                                    <button onClick={() => doApproved()} disabled={isLoadingApproved} >APPROVED</button>
-                                    <button onClick={() => doRejected()} disabled={isLoadingApproved} >REJECTED</button>
+                                    <button onClick={() => handleApproved()} disabled={isLoadingApproved} >APPROVED</button>
+                                    <button onClick={() => handleRejected()} disabled={isLoadingApproved} >REJECTED</button>
                                 </td>
                             </tr>
                         )
                     }
-                    )}
+                    )} */}
+                    <tr>
+                        <td>Junior FullStack</td>
+                        <td>Waiting for Approval</td>
+                        <td>Please fill this approval with deadline at 24 Agustus 2025</td>
+                        <td>
+                            <button className="btn btn-rounded btn-success" onClick={() => handleApproved()} disabled={isLoadingApproved} >APPROVED</button>
+                            <button className="btn btn-rounded btn-danger" onClick={() => handleRejected()} disabled={isLoadingApproved} >REJECTED</button>
+                        </td>
+                    </tr>
                 </tbody>
             </table >
         </div>
     )
 }
 
-export default OfferingApproval
+export default OfferingApproval;

@@ -1,12 +1,23 @@
 import axios from "axios"
-import { API_URL } from "../utils/env_url"
+import { API_URL,jwt } from "../utils/env_url"
+
+export let getApply = async () => {
+    let response = await axios.get(`${API_URL}/api/apply/data`, {
+        headers: {
+            Authorization:
+                `Bearer ${jwt}`,
+            token: "RECRUBATM"
+        },
+    });
+    return response.data;
+}
 
 export let doApply = async (applyData) => {
     try {
-        let response = await axios.post(`${API_URL}/api/apply`, applyData, {
+        let response = await axios.post(`${API_URL}/api/apply`, applyData.apply, {
             headers: {
                 Authorization:
-                    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU2FsZXMiLCJzdWIiOiJhcmlxIiwiaWF0IjoxNzYxNzA3NDU3LCJleHAiOjE3NjE5MjM0NTd9.sWeuCl7K-FxtkT0pwjC0I461Glm4Qxr3P3DsH1j5XA4",
+                   `Bearer ${jwt}`,
                 token: "RECRUBATM"
             },
         });
